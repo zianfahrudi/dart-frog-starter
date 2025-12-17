@@ -13,18 +13,23 @@ Future<Response> onRequest(RequestContext context) async {
   if (username == null || password == null) {
     return Response.json(
       statusCode: 400,
-      body: {'error': 'Missing fields'},
+      body: {'message': 'Missing fields'},
     );
   }
 
-  // Ambil AuthRepository
   final repo = context.read<AuthRepository>();
 
   try {
+    final userAlreadyExist = await repo.findByUsername(username);
+    if (userAlreadyExist != null) {
+      return Response.json(
+        statusCode: 400,
+        body: {'message': 'Username already exist'},
+      );
+    }
+
     final user = await repo.createUser(username, password);
 
-    // Stormberry UserView tidak punya method toJson() bawaan
-    // Kita buat map manual atau tambahkan extension
     return Response.json(
       body: {
         'message': 'User created',

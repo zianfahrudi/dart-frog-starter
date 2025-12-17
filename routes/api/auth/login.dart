@@ -7,29 +7,15 @@ import 'package:auth_feature/services/auth_service.dart';
 import 'package:dart_frog/dart_frog.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  // return Response.json(
-  //   body: {
-  //     'message': 'Login Successfully',
-  //     'data': {
-  //       'token': 'token',
-  //       'refresh_token': 'refreshToken',
-  //       'user': {
-  //         'id': 'user.id',
-  //         'username': 'user.username',
-  //       },
-  //     },
-  //   },
-  // );
   final authService = context.read<AuthService>();
 
   final body = await context.request.json() as Map<String, dynamic>;
   final username = body['username'] as String;
-  final passwordInput = body['password'] as String; // Password ketikan user
+  final passwordInput = body['password'] as String;
 
   final repo = context.read<AuthRepository>();
 
   try {
-    // 1. Cari user berdasarkan username
     final user = await repo.findByUsername(username);
 
     if (user == null) {
