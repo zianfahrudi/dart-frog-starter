@@ -24,7 +24,7 @@ Handler authMiddleware(Handler handler) {
 
     try {
       // Gunakan ENV variable untuk secret key di production
-      final jwt = JWT.verify(token, SecretKey(Env.get('JWT_SECRET')));
+      final jwt = JWT.verify(token, SecretKey('secret'));
 
       final payload = jwt.payload as Map<String, dynamic>;
 

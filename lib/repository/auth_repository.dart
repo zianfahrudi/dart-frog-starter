@@ -25,10 +25,10 @@ class AuthRepository {
     return await _db.select(_db.user).get();
   }
 
-  Future<UserData> findByUsername(String username) async {
-    return await (_db.select(_db.user)
+  Future<UserData?> findByUsername(String username) async {
+    return (await _db.select(_db.user)
           ..where((t) => t.username.equals(username)))
-        .getSingle();
+        .getSingleOrNull();
   }
 
   Future<UserData?> findById(String id) async {

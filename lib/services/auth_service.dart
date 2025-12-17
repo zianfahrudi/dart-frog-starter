@@ -5,8 +5,7 @@ import 'package:bcrypt/bcrypt.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 class AuthService {
-  final String _secret =
-      Env.get('JWT_SECRET'); // Sebaiknya ambil dari Platform.environment
+  final String _secret = 'secret'; // Sebaiknya ambil dari Platform.environment
 
   // Helper untuk Hash Password
   String hashPassword(String plainPassword) {
