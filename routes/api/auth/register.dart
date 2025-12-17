@@ -29,8 +29,8 @@ Future<Response> onRequest(RequestContext context) async {
       body: {
         'message': 'User created',
         'user': {
-          'id': user?.id,
-          'username': user?.username,
+          'id': user.id,
+          'username': user.username,
         },
       },
     );

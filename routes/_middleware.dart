@@ -1,23 +1,25 @@
+import 'package:auth_feature/core/database.dart';
 import 'package:auth_feature/core/env.dart';
 import 'package:auth_feature/repository/auth_repository.dart';
 import 'package:auth_feature/services/auth_service.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:stormberry/stormberry.dart';
 
-final _db = _initDatabase();
+// final _db = _initDatabase();
+final _db = AppDatabase();
 
-Database _initDatabase() {
-  Env.load();
+// Database _initDatabase() {
+//   Env.load();
 
-  return Database(
-    host: Env.get('DB_HOST'),
-    port: Env.getInt('DB_PORT'),
-    database: Env.get('DB_NAME'),
-    username: Env.get('DB_USER'),
-    // password: Env.get('DB_PASS'),
-    useSSL: Env.getBool('DB_SSL'),
-  );
-}
+//   // return Database(
+//   //   host: Env.get('DB_HOST'),
+//   //   port: Env.getInt('DB_PORT'),
+//   //   database: Env.get('DB_NAME'),
+//   //   username: Env.get('DB_USER'),
+//   //   // password: Env.get('DB_PASS'),
+//   //   useSSL: Env.getBool('DB_SSL'),
+//   // );
+// }
 
 // Inisialisasi Repository dengan DB tersebut
 final _userRepo = AuthRepository(_db);
