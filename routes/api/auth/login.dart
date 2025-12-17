@@ -39,43 +39,36 @@ Future<Response> onRequest(RequestContext context) async {
           'message': 'Invalid credentials',
         },
       );
-    } else {
+    }
+
+    final isPasswordCorrect =
+        authService.checkPassword(passwordInput, user.password);
+    if (!isPasswordCorrect) {
       return Response.json(
         statusCode: HttpStatus.badRequest,
         body: {
-          'user': '${user.id}',
+          'message': 'Invalid credentials',
         },
       );
     }
 
-    // final isPasswordCorrect =
-    //     authService.checkPassword(passwordInput, user.password);
-    // if (!isPasswordCorrect) {
-    //   return Response.json(
-    //     statusCode: HttpStatus.badRequest,
-    //     body: {
-    //       'message': 'Invalid credentials',
-    //     },
-    //   );
-    // }
+    final token = authService.generateToken(user.id.toString(), user.username);
+    final refreshToken =
+        authService.generateRefreshToken(user.id.toString(), user.username);
 
-    // final token = authService.generateToken(user.id.toString(), user.username);
-    // final refreshToken =
-    //     authService.generateRefreshToken(user.id.toString(), user.username);
-
-    // return Response.json(
-    //   body: {
-    //     'message': 'Login Successfully',
-    //     'data': {
-    //       'token': token,
-    //       'refresh_token': refreshToken,
-    //       'user': {
-    //         'id': user.id,
-    //         'username': user.username,
-    //       },
-    //     },
-    //   },
-    // );
+    return Response.json(
+      body: {
+        'message': 'Login Successfully',
+        'data': {
+          'token': token,
+          'refresh_token': refreshToken,
+          'user': {
+            'id': user.id,
+            'username': user.username,
+          },
+        },
+      },
+    );
   } catch (e) {
     return Response.json(statusCode: 400, body: {'error': e.toString()});
   }
