@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:auth_feature/repository/auth_repository.dart';
 import 'package:dart_frog/dart_frog.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   if (context.request.method != HttpMethod.post) {
-    return Response(statusCode: 405);
+    return Response(statusCode: HttpStatus.badRequest);
   }
 
   final body = await context.request.json() as Map<String, dynamic>;
@@ -12,7 +14,7 @@ Future<Response> onRequest(RequestContext context) async {
 
   if (username == null || password == null) {
     return Response.json(
-      statusCode: 400,
+      statusCode: HttpStatus.badRequest,
       body: {'message': 'Missing fields'},
     );
   }
@@ -23,8 +25,15 @@ Future<Response> onRequest(RequestContext context) async {
     final userAlreadyExist = await repo.findByUsername(username);
     if (userAlreadyExist != null) {
       return Response.json(
-        statusCode: 400,
+        statusCode: HttpStatus.badRequest,
         body: {'message': 'Username already exist'},
+      );
+    }
+
+    if (username.length < 6) {
+      return Response.json(
+        statusCode: HttpStatus.badRequest,
+        body: {'message': 'Username minimal 6 karakter'},
       );
     }
 
@@ -40,6 +49,9 @@ Future<Response> onRequest(RequestContext context) async {
       },
     );
   } catch (e) {
-    return Response.json(statusCode: 400, body: {'error': e.toString()});
+    return Response.json(
+      statusCode: HttpStatus.badRequest,
+      body: {'error': e.toString()},
+    );
   }
 }
