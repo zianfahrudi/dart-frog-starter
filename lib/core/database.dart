@@ -1,15 +1,11 @@
+// ignore_for_file: public_member_api_docs
+
+import 'package:auth_feature/models/auth/user_model.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 part 'database.g.dart';
-
-class User extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get username => text().withLength(min: 6, max: 32)();
-  TextColumn get password => text().named('password')();
-  DateTimeColumn get createdAt => dateTime().nullable()();
-}
 
 @DriftDatabase(tables: [User])
 class AppDatabase extends _$AppDatabase {

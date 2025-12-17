@@ -1,11 +1,9 @@
 import 'package:auth_feature/core/database.dart';
-import 'package:auth_feature/core/env.dart';
 import 'package:auth_feature/repository/auth_repository.dart';
+import 'package:auth_feature/repository/user_repository.dart';
 import 'package:auth_feature/services/auth_service.dart';
 import 'package:dart_frog/dart_frog.dart';
-import 'package:stormberry/stormberry.dart';
 
-// final _db = _initDatabase();
 final _db = AppDatabase();
 
 // Database _initDatabase() {
@@ -22,7 +20,8 @@ final _db = AppDatabase();
 // }
 
 // Inisialisasi Repository dengan DB tersebut
-final _userRepo = AuthRepository(_db);
+final _authRepo = AuthRepositoryImpl(_db);
+final _userRepo = UserRepositoryImpl(_db);
 final _authService = AuthService();
 
 Handler middleware(Handler handler) {
@@ -30,7 +29,7 @@ Handler middleware(Handler handler) {
       .use(requestLogger()) // Log request yang masuk ke terminal
 
       // --- DEPENDENCY INJECTION ---
-
-      .use(provider<AuthRepository>((_) => _userRepo))
+      .use(provider<AuthRepository>((_) => _authRepo))
+      .use(provider<UserRepository>((_) => _userRepo))
       .use(provider<AuthService>((_) => _authService));
 }

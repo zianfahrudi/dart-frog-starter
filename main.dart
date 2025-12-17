@@ -28,10 +28,10 @@ Future<HttpServer> run(Handler handler, InternetAddress ip, int port) async {
 void startTokenCleanupService() {
   // Timer.periodic akan berjalan terus menerus di latar belakang
   // Contoh: Setiap 1 jam (Duration(hours: 1))
-  Timer.periodic(const Duration(seconds: 10), (timer) {
-    // Di real app: Panggil database -> DELETE FROM tokens WHERE expired_at < NOW()
-    print(
-      '🧹 [Background Job] Sedang membersihkan token expired... ${DateTime.now()}',
-    );
-  });
+  // Timer.periodic(const Duration(seconds: 10), (timer) {
+  //   // Di real app: Panggil database -> DELETE FROM tokens WHERE expired_at < NOW()
+  //   print(
+  //     '🧹 [Background Job] Sedang membersihkan token expired... ${DateTime.now()}',
+  //   );
+  // });
 }

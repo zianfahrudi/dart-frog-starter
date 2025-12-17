@@ -1,29 +1,27 @@
 // ignore_for_file: avoid_print, lines_longer_than_80_chars
 
-import 'package:auth_feature/repository/auth_repository.dart';
+import 'dart:io';
+import 'package:auth_feature/repository/user_repository.dart';
 import 'package:dart_frog/dart_frog.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  if (context.request.method != HttpMethod.get) {
-    return Response(statusCode: 405);
-  }
+  return switch (context.request.method) {
+    HttpMethod.get => _getUsers(context),
+    _ => Future.value(Response(statusCode: HttpStatus.methodNotAllowed))
+  };
+}
 
-  // OPTIONAL: Jika Anda butuh ID user yang sedang login (misal untuk log activity)
-  // Data ini didapat dari provider di middleware tadi
+Future<Response> _getUsers(RequestContext context) async {
   final currentUser = context.read<Map<String, dynamic>>();
   print('User yang merequest data ini adalah ID: ${currentUser['id']}');
 
-  // --- LOGIC UTAMA (Bersih tanpa auth check) ---
-
-  final repo = context.read<AuthRepository>();
+  final repo = context.read<UserRepository>();
   final users = await repo.findAllUsers();
 
-  // Sanitasi data (buang password)
   final safeUsers = users.map((u) {
     return {
       'id': u.id,
       'username': u.username,
-      // Password tidak dikirim
     };
   }).toList();
 

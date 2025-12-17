@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs
 
-import 'package:auth_feature/core/env.dart';
 import 'package:bcrypt/bcrypt.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
