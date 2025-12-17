@@ -26,9 +26,17 @@ class AuthRepository {
   }
 
   Future<UserData?> findByUsername(String username) async {
-    return (await _db.select(_db.user)
-          ..where((t) => t.username.equals(username)))
-        .getSingleOrNull();
+    final List<UserData> result = await (_db.select(_db.user)
+          ..where((t) => t.username.equals(username))
+          // Opsional: Limit 1 biar lebih hemat performa
+          ..limit(1))
+        .get();
+
+    if (result.isNotEmpty) {
+      return result.first;
+    } else {
+      return null;
+    }
   }
 
   Future<UserData?> findById(String id) async {
